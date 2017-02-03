@@ -2,6 +2,7 @@
 Let's Encrypt is a free service that allows us to generate our own secure SSL certificates. Clients can still buy their own certificate and it can still be implemented using the existing documentation, or we can provide them with a certificate that costs us nothing.
 
 Start by running this Jenkins job: [ops-verify-dns](https://leroy.nmdev.us/job/ops-verify-dns)
+
 If the output looks something like this:
 
 ```
@@ -87,7 +88,7 @@ If you visit the site URL right now, you should still see the old site.
 
 If a 403 message is showing, you've done something wrong. Check the output of the proxy job you ran and see if there are any hints there.
 
-DNS record changes are semi-unpredictable in their propagation patterns. We have a hard time telling a client exactly when their site will go live. By using this redirect strategy, we not only have the ability to apply for a certificate when we need to, but we also have direct control of when their site goes live.
+DNS record changes are semi-unpredictable in their propagation patterns. We have a hard time telling a client exactly when their site will go live. By using this redirect strategy and creating their existing server as an upstream, we not only have the ability to apply for a certificate when we need to, but we also have direct control of when their site goes live.
 
 Once the DNS repointing is complete (confirmed by running [ops-verify-dns](https://leroy.nmdev.us/job/ops-verify-dns)), you are done setting up your 'catcher's mitt'.
 
@@ -99,7 +100,7 @@ Make sure the client has pointed their domain at our stack.
 
 If you had to setup a redirect/new upstream above, make sure to delete the entire application block you created in the previous section.
 
-Create the production proxy entry. Set ssl_force = True, and leave SSL undefined.
+Create the production proxy entry. Set ssl_force = True, and leave ssl undefined.
 
 ```
 production:
@@ -114,5 +115,5 @@ production:
   url: https://www.careincommon.com
 ```
 
-Then run update on the production-SITENAME jenkins job. 
-The certificate willl automatically be applied for and added to the acmetool certificate renewal scheduler.
+Then run update on the production-SITENAME jenkins job. (e.g. https://leroy.nmdev.us/job/production-cic)
+The certificate willl automatically be applied for and added to the acmetool certificate renewal scheduler. And you will never have to worry about it ever again.
