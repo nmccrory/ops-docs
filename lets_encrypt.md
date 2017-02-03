@@ -29,16 +29,21 @@ Build step 'Execute shell' marked build as failure
 ```
 
 where the job is claiming that the DNS records are not configured correctly, then you are either working with a site that has actually been configured improperly or you are working with a site that has not yet been pointed at our domain.
+
 If the DNS records have been improperly configured and the site is already pointing at us, make sure to go check out this article before continuing: [Domain/DNS Management]()
+
 If however you are launching this site for the first time and you have yet to repoint the DNS records to our stack, then we are going to setup an upstream to forward traffic to the client's existing server.
-Adding their server as an upstream
+
+### Adding their server as an upstream
 If a client already has an existing site, then we want to forward traffic from our server to theirs until we are ready to take their site live.
 
-So, we want to:
+We would then want to:
+
 1. Create a method on our server to forward entries to their old site
 2. Check that the redirect works by using /etc/hosts
 3. Point the DNS records at our server, then 
 4. Repoint from the old site to the new one
+
 Let's say we're launching careincommon.com. Open the proxy layer (databags/nmdproxy/upstream) and right under production, add a new application entry. The server IP address comes from the dig/jenkins job that you ran earlier.
 
 ```
@@ -72,19 +77,30 @@ production:
   url: https://www.careincommon.com
 ```
   
-Now that all of our URLs match, we can run this job: [opd-deploy-by-url](https://leroy.nmdev.us/job/ops-deploy-by-url/) with Environment = production and  Client = the client's secret name
-Go back to Domain/DNS Management and use the "Verifying the entry at the proxy layer" step to setup /etc/hosts to have the domain point to us
+Now that all of our URLs match, we can run this job: [opd-deploy-by-url](https://leroy.nmdev.us/job/ops-deploy-by-url/) with Environment = production and  Client = the client's project name (e.g. cic for careincommon.com).
+
+Go back to [Domain/DNS Management]() and use the "Verifying the entry at the proxy layer" step to setup /etc/hosts to have the domain point to us:
+
 `54.149.1.10 www.careincommon.com careincommon.com`
-If you visit the site URL right now, you should still see the old site. If a 403 message is showing, you've done something wrong. Check the output of the proxy job you ran and see if there are any hints there.
+
+If you visit the site URL right now, you should still see the old site.
+
+If a 403 message is showing, you've done something wrong. Check the output of the proxy job you ran and see if there are any hints there.
+
 DNS record changes are semi-unpredictable in their propagation patterns. We have a hard time telling a client exactly when their site will go live. By using this redirect strategy, we not only have the ability to apply for a certificate when we need to, but we also have direct control of when their site goes live.
-Once the DNS repointing is complete (confirmed by running [ops-verify-dns](https://leroy.nmdev.us/job/ops-verify-dns)), you can delete the entire upstream entry you created in the proxy layer (in this case, the cic section) and proceed on with the Getting the Certificate section.
 
-The client MUST have their DNS pointed at us before starting the next section. If it is not pointed at us, the certificate request will fail.
+Once the DNS repointing is complete (confirmed by running [ops-verify-dns](https://leroy.nmdev.us/job/ops-verify-dns)), you are done setting up your 'catcher's mitt'.
 
-## Getting the Certificate
+The client MUST have their DNS pointed at us before starting the next section. If it is not pointed at us, the Let's Encrypt certificate validation request will fail.
+
+### Getting the Certificate
 If the client is launching their site to a brand new URL and there is no current site, then this is the section for you!
 Make sure the client has pointed their domain at our stack.
+
+If you had to setup a redirect/new upstream above, make sure to delete the entire application block you created in the previous section.
+
 Create the production proxy entry. Set ssl_force = True, and leave SSL undefined.
+
 ```
 production:
   webcluster01:
@@ -97,5 +113,6 @@ production:
   - www.careincommon.com
   url: https://www.careincommon.com
 ```
+
 Then run update on the production-SITENAME jenkins job. 
-The certificate willl automatically be applied for and added to the renewal scheduler.
+The certificate willl automatically be applied for and added to the acmetool certificate renewal scheduler.
