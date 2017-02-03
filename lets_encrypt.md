@@ -108,7 +108,9 @@ production:
     apps:
       www.careincommon.com:
         ssl_force: true
+```
 Edit the site's secret (databags/nmdhosting/SITENAME) and ensure that the URL is https and the domain name is listed in server_aliases
+```
 production:
   server_aliases:
   - www.careincommon.com
