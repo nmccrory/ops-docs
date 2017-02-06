@@ -1,3 +1,4 @@
+## Create a WordPress Archive
 1. In order to do this process, it is required that the site be entirely completed.
   a. This includes prototype 3 corrections, QA corrections, and anything that came up in training 
 2. Complete the WordPress Go Live Process
