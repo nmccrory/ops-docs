@@ -14,7 +14,7 @@ Inside of each application block, any of the following optional flags can be spe
 | ssl | String | The name of the certificate secret in databags/nmdcerts/{env}/{name} |
 | logging | Boolean | Enables access and error logging on both the proxy and web servers |
 --------------------------
-_Note: logs can be accessed by SSH-ing to web.newmediadenver.com, proxy.newmediadenver.com, web.nmdev.us and proxy.nmdev.us
+_Note: logs can be accessed by SSH-ing to web.newmediadenver.com, proxy.newmediadenver.com, web.nmdev.us and proxy.nmdev.us_
 
 **Deprecated flags**:
 www_force will now be ignored - the URL that is provided will be enforced.
