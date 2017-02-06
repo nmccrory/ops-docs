@@ -18,9 +18,9 @@ _Note: logs can be accessed by SSH-ing to web.newmediadenver.com, proxy.newmedia
 
 **Deprecated flags**:
 www_force will now be ignored - the URL that is provided will be enforced.
-e.g. 'www.newmedia.com' 
+e.g. 'www.newmedia.com' will respect requests for both newmedia.com and www.newmedia.com, whereas 'riotlabs.com' would only support traffic routed to riotlabs.com and would not serve www.riotlabs.com
 
-**Common Combos**
+**Common Entries**
 
 ```
 production:
@@ -30,7 +30,7 @@ production:
         auth: true # Enables the auth wall
         ssl: nmdev.us # Use a predefined SSL certificate
         ssl_force: true # Enforce SSL redirection
-        logging: true
+        logging: true # Enable logging
      
       # Renders a site at http://www.develops.guru
       www.develops.guru {}
