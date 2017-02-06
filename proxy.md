@@ -1,7 +1,7 @@
-#
+# Managing The Proxy Servers
 ---
 
-To open the proxy server, run: 
+To open the proxy server, run: `drud secret edit databags/nmdproxy/upstream`
 
 ## Flags:
 Inside of each application block, any of the following optional flags can be specified
