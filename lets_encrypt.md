@@ -58,9 +58,9 @@ production:
 
 This will allow us to accept traffic from people visiting http://www.careincommon.com and http://careincommon.com.
 If the client has an existing SSL certificate, then set 'ssl_passthrough' to true and leave ssl and ssl_force undefined.
-production:
 
 ```
+production:
   cic:
     apps:
       www.careincommon.com:
