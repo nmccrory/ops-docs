@@ -39,3 +39,26 @@ production:
     - server web02.newmediadenver.com:80;
     - server web03.newmediadenver.com:80;
 ```      
+
+--
+### Verifying a Proxy Entry
+To verify the proxy configuration is correct prior to pointing the client's domain, Edit your system /etc/hosts file with a an entry pointing the domain to one of our proxy servers:
+
+```
+**Example /etc/hosts file**
+	##
+	# Host Database
+	#
+	# localhost is used to configure the loopback interface
+	# when the system is booting.  Do not change this entry.
+	##
+	127.0.0.1       localhost
+	255.255.255.255 broadcasthost
+	::1             localhost
+ 
+	54.149.1.10 example.com www.example.com
+```
+Once this is saved, navigate to the domain in your browser. If the configuration is valid, you should see the site loading from our infrastructure, and non-www should redirect automatically to www.
+
+**Important:** Remove the /etc/hosts entry immediately after you have completed verification to ensure your system is relying on real DNS records to load the domain. Failure to remove the modification will make it impossible to verify the site is properly configured when client DNS records are pointed.
+Pointing DNS Records to Proxy Layer
