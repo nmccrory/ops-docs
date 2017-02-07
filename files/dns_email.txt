@@ -1,0 +1,19 @@
+Hi {INSERT CLIENT},
+One important step in a web development project is to effectively manage where your domain (e.g. www.yoursite.com) points. Failure to plan for this can result in timing and propagation delays.
+To avoid any delays, SMB's hosting environments utilize a name based DNS, which allows us to point your domain at your current server up until the exact moment you’re ready to go live.
+ 
+To get started, we ask you to update your DNS accordingly:
+ 
+example.com (non-www version) A record to 54.149.1.10
+www.example.com (www version) CNAME record to hosting.newmediadenver.com
+ 
+Once updated, you will want to verify that this has been done correctly by using the following tools to check DNS records:
+ 
+ 
+Check CNAME: http://mxtoolbox.com/CNAMELookup.aspx (input "www.example.com")
+Check A record: http://www.mxtoolbox.com/DNSLookup.aspx (input "example.com")
+ 
+Please note that some DNS changes can take up to anywhere from 24-48 hours to propagate.
+Thanks,
+{INSERT NAME} 
+
