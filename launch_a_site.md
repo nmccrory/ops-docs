@@ -2,10 +2,10 @@
 
 The order of operations is to:
 
-1. Create a method on our server to forward entries to their old site (if applicable)
-2. Check that the redirect works by using /etc/hosts
-3. Point the DNS records at our server
-4. Repoint from the old site to the new one on our infrastructure
+- Create a method on our server to forward entries to their old site (if applicable)
+- Check that the redirect works by using /etc/hosts
+- Point the DNS records at our server
+- Repoint from the old site to the new one on our infrastructure
 
 **DNS repointing should be done as soon as possible. If you wait until the end of the project, the launch process is much less reliable/predictable. Complete all the steps through to #Point-the-DNS-at-DRUD the second the client has paid at the beginning of the project.**
 
@@ -29,6 +29,25 @@ production:
 ```
 
 This will allow us to accept traffic from people visiting http://www.careincommon.com and http://careincommon.com.
+
+If the client has an existing SSL certificate, then your work is a little more complicated.
+You will need to obtain a copy of the existing certificate from the client, then follow the steps as though you were installing a pre-purchased SSL certificate for a standard site launch detailed in the [Pre-defined SSL Certificates](ssl.md#pre-defined-ssl-certificates) section.
+
+```yaml
+production:
+  cic:
+    apps:
+      www.careincommon.com:
+        ssl_force: true
+        ssl: "careincommon.com"
+    servers:
+    - server 107.180.48.109:80;
+```
+_Note_: The `ssl_force` is theoretically optional, so if you notice issues with us enforcing the SSL redirect at our proxy layer, try removing it.
+
+<!---
+It's **possible** that we might just be able to use let's encrypt on our own server and pass the traffic on http, but I think it would end up causing a redirect loop? More testing is needed.
+As for the passthrough below
 If the client has an existing SSL certificate, then set 'ssl\_passthrough' to true and leave 'ssl' and 'ssl\_force' undefined.
 
 ```yaml
@@ -40,7 +59,8 @@ production:
     servers:
     - server 107.180.48.109:80;
 ```
-You are now done setting up your traffic forwarding catcher's mitt. You may move onto the /etc/hosts verification step.
+--->
+You are now done setting up your traffic forwarding catcher's mitt. You shall now pass -->
 
 ## Enable the Upstream
 Now that all of our URLs match, we can run this job: [ops-deploy-by-url](https://leroy.nmdev.us/job/ops-deploy-by-url/) with `Environment = production` and `Client = the client's project name (e.g. cic for careincommon.com)`.
@@ -132,7 +152,7 @@ If the client has not provided an SSL certificate, that's OK, we can provide the
 
 **tl;dr:** Set the `ssl_force` flag to `true` in the proxy layer and make sure that `ssl` and `ssl_passthrough` are not defined.
 
-More detailed instructions can be found on the [Let's Encrypt](lets_encrypt.md#lets-encrypt-certificates) page.
+More detailed instructions can be found on the [Let's Encrypt](ssl.md#lets-encrypt-certificates) page.
 
 ## Get It Done
 If you've done everything correctly up until this point, then you are a rockstar, and you should just be able to run and update on your site (https://leroy.nmdev.us/production-SITENAME).

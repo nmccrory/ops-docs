@@ -10,7 +10,6 @@ Inside of each application block, any of the following optional flags can be spe
 |------|-------|-------------|---------
 | `auth` | Boolean | :lock: Places a basic HTTP authentication wall in front of the app | `auth: true` 
 | `ssl_force` | Boolean | Enforces a 301 redirect from http to https. Defining this flag by itself  | `ssl_force: true`
-| `ssl_passthrough` | Boolean | Used explicitly for passing traffic through to existing SSL sites | `ssl_passthrough: true`
 | `ssl` | String | The name of the certificate secret in databags/nmdcerts/{env}/{name} | `ssl: "newmedia.com"`
 | `logging` | Boolean | :page_with_curl: Enables access and error logging on both the proxy and web servers | `logging: true`
 | `auth_exclude` | String array | An array of paths where the basic authentication wall should not be present. These paths are unpacked as [nginx location directives](https://www.digitalocean.com/community/tutorials/understanding-nginx-server-and-location-block-selection-algorithms#matching-location-blocks) | (Single line example, see multiline in the example below) - `auth_exclude: { '/not-auth', '/api', '/dumb_module_path' }` 
@@ -19,9 +18,9 @@ Inside of each application block, any of the following optional flags can be spe
 | `proxy_buffers` | string | Controls the proxy buffers | `proxy_buffers: "8 25m"`
 | `proxy_busy_buffers_size` | string | Controls the proxy busy buffers size | `proxy_busy_buffers_size: "25m"`
 | `client_max_body_size` | string | Controls the client max body size | `client_max_body_size: "25m"`
-| `maintenance` | Boolean | Redirects all requests to the /var/www/maintenance.html page and returns a 503 error code | `maintenance: true`
+| `maintenance` | Boolean | Redirects all requests to the [/var/www/maintenance.html](https://github.com/drud/drudfab/blob/master/roles/manage_proxy/files/maintenance.html) page on the proxy server and returns a 503 error code | `maintenance: true`
 
-_Note: logs can be accessed by SSH-ing to web.newmediadenver.com, proxy.newmediadenver.com, web.nmdev.us and proxy.nmdev.us_
+_Note: logs can be accessed by running the [ops-tail-server-log](https://leroy.nmdev.us/job/ops-tail-server-log/build?delay=0sec) Jenkins job_
 
 **Deprecated flags**:
 www_force will now be ignored. Instead, the application name that is provided here (the url) will be enforced. e.g. `www.newmedia.com` would serve requests for both `newmedia.com` and `www.newmedia.com`, whereas `riotlabs.com` would only support traffic routed to `riotlabs.com` and would not respond to requests to `www.riotlabs.com`
