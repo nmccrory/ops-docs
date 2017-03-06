@@ -2,7 +2,7 @@
 
 * Collect laptop.
 * Reformat laptop.
-* Rekey vault if applicable.
+* Rekey vault if user had unseal keys. In this case, consider auditing root tokens as well.
 * Delete user from [gSuite](https://admin.google.com/drud.com/AdminHome?hl=en&pli=1&fral=1#UserList:org=3v377ch2rm5fsp). During the process, you will be asked to transfer all documents from Google Drive to a new owner and should do so.
 * Remove user from [DRUD github](https://github.com/orgs/drud/people).
 * Remove user from [newmedia github](https://github.com/orgs/newmedia/people) if applicable.
@@ -13,3 +13,6 @@
 * Validate [AWS IAM users](https://console.aws.amazon.com/iam/home?#/users) for newmedia
 * rotate passwords for service accounts.
 * rotate github tokens for service accounts (newmediadenverbot, etc.)
+* Revoke access to any lastpass secrets that are shared. Most should be invalidated instead. This is done in lastpass "sharing center".
+* Make sure user is removed from [circle team](https://circleci.com/team). 
+
