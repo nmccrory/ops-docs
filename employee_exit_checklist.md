@@ -5,7 +5,7 @@
 * Rekey vault if user had unseal keys. In this case, consider auditing root tokens as well.
 * Delete user from [gSuite](https://admin.google.com/drud.com/AdminHome?hl=en&pli=1&fral=1#UserList:org=3v377ch2rm5fsp). During the process, you will be asked to transfer all documents from Google Drive to a new owner and should do so.
 * Remove user from [DRUD github](https://github.com/orgs/drud/people).
-* Remove user from [newmedia github](https://github.com/orgs/newmedia/people) if applicable.
+* Remove user from [newmedia github](https://github.com/orgs/newmediadenver/people) if applicable.
 * Remove user and any of the user's bots from [slack](https://drud.slack.com/admin)
 * Delete user's [Google Cloud Projects](https://console.cloud.google.com/iam-admin/projects?organizationId=722910822582).
 * Remove user from each project in [GCP](https://console.cloud.google.com/iam-admin/projects?organizationId=722910822582).  Select all projects and use the info panel to remove the user's accounts.
