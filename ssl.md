@@ -11,18 +11,18 @@ If the output looks something like this:
 Now checking the CNAME and A record for correct configuation...
 
 There is a A record for careincommon.com. It is pointing to 107.180.48.109
- 
+
 This DNS record IS NOT CONFIGURED correctly
- 
+
 Here are the current A and CNAME values for careincommon.com:
 'careincommon.com' did not have any 'CNAME' records associated with it
 A records for careincommon.com:
     107.180.48.109
 CNAME records for careincommon.com:
 There is a CNAME record for www.careincommon.com. It is pointing to careincommon.com.
- 
+
 This DNS record IS NOT CONFIGURED correctly
- 
+
 Here are the current A and CNAME values for www.careincommon.com:
 A records for www.careincommon.com:
     107.180.48.109

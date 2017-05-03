@@ -6,13 +6,13 @@ To open the proxy server, run: `drud secret edit databags/nmdproxy/upstream`
 ## Flags:
 Inside of each application block, any of the following optional flags can be specified
 
-| Name | Type  | Description | Example 
+| Name | Type  | Description | Example
 |------|-------|-------------|---------
-| `auth` | Boolean | :lock: Places a basic HTTP authentication wall in front of the app | `auth: true` 
+| `auth` | Boolean | :lock: Places a basic HTTP authentication wall in front of the app | `auth: true`
 | `ssl_force` | Boolean | Enforces a 301 redirect from http to https. Defining this flag by itself  | `ssl_force: true`
 | `ssl` | String | The name of the certificate secret in databags/nmdcerts/{env}/{name} | `ssl: "newmedia.com"`
 | `logging` | Boolean | :page_with_curl: Enables access and error logging on both the proxy and web servers | `logging: true`
-| `auth_exclude` | String array | An array of paths where the basic authentication wall should not be present. These paths are unpacked as [nginx location directives](https://www.digitalocean.com/community/tutorials/understanding-nginx-server-and-location-block-selection-algorithms#matching-location-blocks) | (Single line example, see multiline in the example below) - `auth_exclude: { '/not-auth', '/api', '/dumb_module_path' }` 
+| `auth_exclude` | String array | An array of paths where the basic authentication wall should not be present. These paths are unpacked as [nginx location directives](https://www.digitalocean.com/community/tutorials/understanding-nginx-server-and-location-block-selection-algorithms#matching-location-blocks) | (Single line example, see multiline in the example below) - `auth_exclude: { '/not-auth', '/api', '/dumb_module_path' }`
 | `verify_ssl` | Boolean | Run SSL verification commands against the installed SSL certificate | `verify_ssl: true`
 | `proxy_buffer_size` | string | Controls the proxy buffer size |  `proxy_buffer_size: "25m"`
 | `proxy_buffers` | string | Controls the proxy buffers | `proxy_buffers: "8 25m"`
@@ -35,22 +35,22 @@ production:
         auth: true # Enables the auth wall
         ssl_force: true # Enforce SSL redirection
         logging: true # Enable logging
-     
+
       www.develops.guru: {} # Renders a site at http://www.develops.guru
-      
+
       christestprod.drud.io:
         ssl_force: true
         verify_ssl: true # Runs certificate verification steps to ensure that the certificate is valid before deploying it
-        auth_exclude: # An array of nginx location directives 
+        auth_exclude: # An array of nginx location directives
         - "/no-auth" # Removes authentication on all /no-auth/* paths
         - "= /exact" # Removes authentication from /exact path only, no sub paths
-      
+
       www.listenfordns.ninja: # Renders a site at https://www.listenfordns.ninja with a Let's Encrypt SSL certificate
         ssl_force: true # When specified without the ssl or ssl_passthrough directive, this will apply for a Let's Encrypt certificate.
-    
+
     servers: # An array of servers that are responsible for rendering and returning the website itself
     - server drud-elb.production:80;
-```      
+```
 
 --
 ### Verifying a Proxy Entry
@@ -68,7 +68,7 @@ To verify the proxy configuration is correct prior to pointing the client's doma
 	127.0.0.1       localhost
 	255.255.255.255 broadcasthost
 	::1             localhost
- 
+
 	35.166.147.204 example.com www.example.com
 ```
 Once this is saved, navigate to the domain in your browser. If the configuration is valid, you should see the site loading from our infrastructure, and non-www should redirect automatically to www.
