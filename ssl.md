@@ -3,7 +3,7 @@
 Let's Encrypt is a free service that allows us to generate our own secure SSL certificates. Clients can still buy their own certificate and it can still be implemented using the existing documentation, or we can provide them with a certificate that costs us nothing.
 
 ### Verify DNS
-Start by running this Jenkins job: [ops-verify-dns](https://leroy.nmdev.us/job/ops-verify-dns)
+Start by running this Jenkins job: [ops-verify-dns](https://leroy.drud.com/job/ops-verify-dns)
 
 If the output looks something like this:
 
@@ -34,10 +34,11 @@ Build step 'Execute shell' marked build as failure
 where the job is claiming that the DNS records are not configured correctly, then you are either working with a domain that has either been mis-configured or you are working with a site that has not yet been pointed at our domain.
 
 Ensure the records are correct:
+
 Name/Host/Alias | Time to Live (TTL) | Record Type | Value/Answer/Destination
 ------------ | ------------- | ----------- | ------------------------
-Blank or @ | 3600 | A | 54.149.1.10
-www | 3600 | CNAME | hosting.newmediadenver.com
+Blank or @ | 300 | A | 35.166.147.204 <br> 34.210.3.109
+www | 300 | CNAME | hosting.drud.com
 
 For more information, see [Point the DNS at DRUD](launch_a_site.md#point-the-dns-at-drud).
 

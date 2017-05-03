@@ -7,7 +7,7 @@ The order of operations is to:
 - Point the DNS records at our server
 - Repoint from the old site to the new one on our infrastructure
 
-**DNS repointing should be done as soon as possible. If you wait until the end of the project, the launch process is much less reliable/predictable. Complete all the steps through to #Point-the-DNS-at-DRUD the second the client has paid at the beginning of the project.**
+**DNS repointing should be done as soon as possible. If you wait until the end of the project, the launch process is much less reliable/predictable. Complete all the steps through to [point the DNS at DRUD](launch_a_site.md#point-the-dns-at-drud) the second the client has paid at the beginning of the project.**
 
 ## Launching a Pre-Existing Site / Creating an Upstream
 Think about creating an upstream proxy entry like setting up a catcher's mitt. We catch/receive inbound traffic and then toss/forward that traffic to the pre-existing site's old server. The site should look the same before starting this and after completing it.
@@ -63,7 +63,7 @@ production:
 You are now done setting up your traffic forwarding catcher's mitt. You shall now pass -->
 
 ## Enable the Upstream
-Now that all of our URLs match, we can run this job: [ops-deploy-by-url](https://leroy.nmdev.us/job/ops-deploy-by-url/) with `Environment = production` and `Client = the client's project name (e.g. cic for careincommon.com)`.
+Now that all of our URLs match, we can run this job: [ops-deploy-by-url](https://leroy.drud.com/job/ops-deploy-by-url/) with `Environment = production` and `Client = the client's project name (e.g. cic for careincommon.com)`.
 
 
 ## Verify and Troubleshoot
@@ -91,7 +91,7 @@ If a 403 message is showing, you've done something wrong. :expressionless: Check
 If your verification steps check out, :thumbsup:, move on. If not, double-check that:
 
 - The jenkins update job ran successfully
-- The `databags/nmdhosting/SITENAME` production `server_alias` and `url` values match the proxy entry app name in `databags/nmdproxy/upstream`
+- The `databags/drudhosting/SITENAME` production `server_alias` and `url` values match the proxy entry app name in `databags/nmdproxy/upstream`
 - If the job failed at the Let's Encrypt step, read through [Let's Encrypt](lets_encrypt.md) for a sanity check.
 
 ## Point the DNS at DRUD
@@ -100,21 +100,21 @@ Clients hosting in DRUD infrastructure require the following DNS records:
 
 Name/Host/Alias | Time to Live (TTL) | Record Type | Value/Answer/Destination
 ------------ | ------------- | ----------- | ------------------------
-Blank or @ | 3600 | A | 54.149.1.10
-www | 3600 | CNAME | hosting.newmediadenver.com
+Blank or @ | 300 | A | 34.210.3.109 <br> 35.166.147.204
+www | 300 | CNAME | hosting.drud.com
 
 Any client that hosts their site within our infrastructure must have the appropriate DNS records pointed at our proxy layer in AWS. In laymen's terms, they need to point their sites (i.e. clientsite.com and www.clientsite.com) at our infrastructure. That gives us the ability to manage which server(s) the domain points to without involving the client, which is highly beneficial for a variety of reasons (efficiency, removing the client as a dependency, etc).
 
-####Mail Server Considerations
+#### Mail Server Considerations
 While many domain management interfaces will use MX to control mail separately, some sytems, like GoDaddy, rely on a "mail" CNAME. If the primary host is pointed elsewhere, the mail will be as well. To address this (at least within GoDaddy), remove the mail CNAME and add an A record for "mail" that will be pointed at the previous host IP. If there is a cPanel, that should also be updated to the mail host that was just created. Unless familiar with the unique system, it does not hurt to call the hosting entity and confirm settings.
 
-####Client Communication
+#### Client Communication
 Here is the template for the client communication: [DNS Change Client Communication.txt](files/dns_email.txt)
 
 ## Connecting an Internal Site to a Client URL
 These steps create an association between the internal application (e.g. the new site) and the client's URL.
 
-Open up the client secret `drud secret edit databags/nmdhosting/SITENAME` and set the `url` and `server_aliases` values to match this URL. When you launch a site, you want only one server alias per site.
+Open up the client secret `drud secret edit databags/drudhosting/SITENAME` and set the `url` and `server_aliases` values to match this URL. When you launch a site, you want only one server alias per site.
 
 ```yaml
 production:
@@ -134,17 +134,17 @@ If you are launching a Drupal site, you can go ahead and save the vault secret (
 
 ```yaml
 search_replace:
-    - http://1feeprod.nmdev.us
-    - https://1feeprod.nmdev.us
-    - http://1fee.nmdev.us
-    - https://1fee.nmdev.us
+    - http://1feeprod.drud.io
+    - https://1feeprod.drud.io
+    - http://1fee.drud.io
+    - https://1fee.drud.io
 ```
 _Note: Internally our sites run on HTTPS so even if the live site is not using HTTPS be sure to add `search_replace` values for both HTTP and HTTPS urls in the `search_replace` key. The goal is to capture every possible internal/development URL to eliminate them from the production site._
 
 Close and save the vault secret (e.g. save+quit out of your editor).
 
 ## Proxy Layer
-Once the DNS repointing is complete (confirmed by running [ops-verify-dns](https://leroy.nmdev.us/job/ops-verify-dns)), and the client site is loading successfully using the /etc/hosts spoof trick detailed in [Verifying a Proxy Entry](proxy_cheatsheet.md#verifying-a-proxy-entry), then you are ready to update the proxy layer to stop forwarding traffic to the old/upstream server and to instead point it at our server
+Once the DNS repointing is complete and the client site is loading successfully using the /etc/hosts spoof trick detailed in [Verifying a Proxy Entry](proxy_cheatsheet.md#verifying-a-proxy-entry), then you are ready to update the proxy layer to stop forwarding traffic to the old/upstream server and to instead point it at the drud servers.
 
 If the client has provided a pre-purchased SSL certificate, follow the installation steps detailed in the [Pre-defined SSL Certificates](ssl.md#pre-defined-ssl-certificates) section. Once complete, you may skip ahead to [Get it Done](#get-it-done).
 
@@ -155,10 +155,10 @@ If the client has not provided an SSL certificate, that's OK, we can provide the
 More detailed instructions can be found on the [Let's Encrypt](ssl.md#lets-encrypt-certificates) page.
 
 ## Get It Done
-If you've done everything correctly up until this point, then you are a rockstar, and you should just be able to run and update on your site (https://leroy.nmdev.us/production-SITENAME).
+If you've done everything correctly up until this point, then you are a rockstar, and you should just be able to run and update on your site (https://leroy.drud.com/production-SITENAME).
 
 Afterwards, try loading the client site in an incognito window (or a different browser) and click on the server certificate details by clicking on the lock in the address bar. If you don't see a padlock or https, then the certificate didn't take. If you are updating an existing SSL certificate, just make sure the new certificate expiration date is correct in the certificate details pane.
 
 if job == success: :beers:
 
-if job == failure: Double-check the suggested steps in the [Verify and Troubleshoot](launch_a_site.md#Verify-and-Troubleshoot) section and if that doesn't work, start back [at the top](launch_a_site.md#).
+if job == failure: Double-check the suggested steps in the [Verify and Troubleshoot](launch_a_site.md#verify-and-troubleshoot) section and if that doesn't work, start back [at the top](launch_a_site.md#).

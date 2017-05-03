@@ -20,7 +20,7 @@ Inside of each application block, any of the following optional flags can be spe
 | `client_max_body_size` | string | Controls the client max body size | `client_max_body_size: "25m"`
 | `maintenance` | Boolean | Redirects all requests to the [/var/www/maintenance.html](https://github.com/drud/drudfab/blob/master/roles/manage_proxy/files/maintenance.html) page on the proxy server and returns a 503 error code | `maintenance: true`
 
-_Note: logs can be accessed by running the [ops-tail-server-log](https://leroy.nmdev.us/job/ops-tail-server-log/build?delay=0sec) Jenkins job_
+_Note: logs can be accessed by running the [ops-tail-server-log](https://leroy.drud.com/job/ops-tail-server-log/build?delay=0sec) Jenkins job_
 
 **Deprecated flags**:
 www_force will now be ignored. Instead, the application name that is provided here (the url) will be enforced. e.g. `www.newmedia.com` would serve requests for both `newmedia.com` and `www.newmedia.com`, whereas `riotlabs.com` would only support traffic routed to `riotlabs.com` and would not respond to requests to `www.riotlabs.com`
@@ -29,32 +29,27 @@ www_force will now be ignored. Instead, the application name that is provided he
 
 ```yaml
 production:
-  webcluster01: # The name of the application pool
+  drud-elb: # The name of the application pool
     apps: # A dictionary of web app definitions
-      amlprod.nmdev.us: # Renders a site at https://amlprod.nmdev.us with an authentication wall in front of it and logging turned on
+      amlprod.drud.io: # Renders a site at https://amlprod.nmdev.us with an authentication wall in front of it and logging turned on
         auth: true # Enables the auth wall
-        ssl: nmdev.us # Use a predefined SSL certificate
         ssl_force: true # Enforce SSL redirection
         logging: true # Enable logging
      
       www.develops.guru: {} # Renders a site at http://www.develops.guru
       
-      christestprod.nmdev.us:
-        ssl: nmdev.us
+      christestprod.drud.io:
         ssl_force: true
         verify_ssl: true # Runs certificate verification steps to ensure that the certificate is valid before deploying it
         auth_exclude: # An array of nginx location directives 
         - "/no-auth" # Removes authentication on all /no-auth/* paths
         - "= /exact" # Removes authentication from /exact path only, no sub paths
-        - "~* \.(jpe?g|png|gif|ico)$" # Removes authentication from case-insensitive filenames (i.e. /tortoise.jpg and /FLOWER.PNG)
       
       www.listenfordns.ninja: # Renders a site at https://www.listenfordns.ninja with a Let's Encrypt SSL certificate
         ssl_force: true # When specified without the ssl or ssl_passthrough directive, this will apply for a Let's Encrypt certificate.
     
     servers: # An array of servers that are responsible for rendering and returning the website itself
-    - server web01.newmediadenver.com:80;
-    - server web02.newmediadenver.com:80;
-    - server web03.newmediadenver.com:80;
+    - server drud-elb.production:80;
 ```      
 
 --
@@ -63,7 +58,7 @@ To verify the proxy configuration is correct prior to pointing the client's doma
 
 **Example /etc/hosts file**
 
-```yaml
+```
 	##
 	# Host Database
 	#
@@ -74,15 +69,14 @@ To verify the proxy configuration is correct prior to pointing the client's doma
 	255.255.255.255 broadcasthost
 	::1             localhost
  
-	54.149.1.10 example.com www.example.com
+	35.166.147.204 example.com www.example.com
 ```
 Once this is saved, navigate to the domain in your browser. If the configuration is valid, you should see the site loading from our infrastructure, and non-www should redirect automatically to www.
 
 **Important:** Remove the /etc/hosts entry immediately after you have completed verification to ensure your system is relying on real DNS records to load the domain. Failure to remove the modification will make it impossible to verify the site is properly configured when client DNS records are repointed.
 
 ## Some Helpful Jenkins Jobs
-**These jobs only run the proxy portion of the drudfab deployment.** If you've made a change in databags/nmdhosting/SITENAME, chances are you cannot use this job. If however you just edited the proxy layer and no changes need to be made on the web server itself, (i.e. changing the web server's vhost file to accept a new url, adding wp rewrite entries, etc)
+**These jobs only run the proxy portion of the drudfab deployment.** If you've made a change in databags/drudhosting/SITENAME, chances are you cannot use this job. If however you just edited the proxy layer and no changes need to be made on the web server itself, (i.e. changing the web server's vhost file to accept a new url, adding wp rewrite entries, etc)
 
-- [https://leroy.nmdev.us/job/ops-proxy-single-entry](https://leroy.nmdev.us/job/ops-proxy-single-entry/build?delay=0sec) - Updates a single site's configuration on the proxy servers given a sitename/client key and an environment.
-- [https://leroy.nmdev.us/job/ops-deploy-by-url](https://leroy.nmdev.us/job/ops-deploy-by-url/build?delay=0sec) - Updates a sinlge site's configuration given a URL. _This URL cannot have http or https in it._
+- [https://leroy.drud.com/job/ops-deploy-by-url](https://leroy.drud.com/job/ops-deploy-by-url/build?delay=0sec) - Updates a sinlge site's configuration given a URL. _This URL cannot have http or https in it._
 
