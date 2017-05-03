@@ -31,7 +31,7 @@ www_force will now be ignored. Instead, the application name that is provided he
 production:
   drud-elb: # The name of the application pool
     apps: # A dictionary of web app definitions
-      amlprod.drud.io: # Renders a site at https://amlprod.nmdev.us with an authentication wall in front of it and logging turned on
+      amlprod.drud.io: # Renders a site at https://amlprod.drud.io with an authentication wall in front of it and logging turned on
         auth: true # Enables the auth wall
         ssl_force: true # Enforce SSL redirection
         logging: true # Enable logging
