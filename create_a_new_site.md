@@ -1,6 +1,5 @@
 ## Creating a New Site
-
-For the most part, creating a new site is almost exactly the same as before.
+_For the most part, creating a new site on leroy.drud.com is almost exactly the same as before._
 
 - This process can be completed by anyone on the production team with access to Jenkins and an understanding of how to use it.
 - If a PM or PC is not comfortable completing this process or chooses not to access Jenkins, they can reach out to a production developer (through a ticket within the project) to request assistance in completing the task.
@@ -16,8 +15,8 @@ For the most part, creating a new site is almost exactly the same as before.
       - `theme`: use sage for WordPress, use front.theme for Drupal 7
       - `theme_version`: use master for WordPress, use 7.x-1.x for Drupal 7
       - `db_server_production`: select any of the entries
-      - You will need the client's first name, last name, and email address. These will be used for client communication (IE: during outages).
-      - Run the Job. When it has completed successfully, a notification will display in the DevOps channel providing the staging and production URLs for the site.
+      - You will need the client's first name, last name, and email address. These will be used for client communication (i.e. during outages).
+      - Run the Job.
 
 The job will perform the following steps:
 - Create a secret for the site
@@ -35,7 +34,7 @@ The job will perform the following steps:
   - Click "build with parameters"
   - Input "sitename" (Your lowercase project key)
   - Confirm Direction is "Down"
-  - Then click "Build" 
+  - Then click "Build"
 WordPress Only: Adding theme license to databag
 [Follow this link to add the theme license information to the site databag.](adding_theme_license_info.md)
 

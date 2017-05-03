@@ -6,6 +6,7 @@
 * newmediadenverbot: Hyper-powerful account (admin) used for jenkins activities for hosting.
 * drud-monitoring-machine-account: Not currently used (3/6/2017). Had been intended for vault monitoring.
 * drud-test-user: Not currently used (3/6/2017), can be used for manual testing.
+* drud-jenkins: Used for leroy.drud.com to pull/create repos in the drud and newmediadenver github orgs
 
 ## Dockerhub
 
