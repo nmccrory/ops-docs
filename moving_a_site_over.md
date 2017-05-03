@@ -142,6 +142,19 @@ staging:
 +  url: http://drudio.drud.io
 ```
 
+#### For WP Sites
+Add a `search_replace` entry for the old site URLs:
+
+```
+production
+  search_replace:
+  - http://drudioprod.nmdev.us
+
+staging:
+  search_replace:
+  - http://drudio.nmdev.us
+```
+
 ## Deploy it!
 - Run a `create` on https://leroy.drud.com/job/production-<sitename>/
   - When this finishes, the site will be live
