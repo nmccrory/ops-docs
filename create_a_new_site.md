@@ -36,5 +36,26 @@ The job will perform the following steps:
   - Confirm Direction is "Down"
   - Then click "Build"
 WordPress Only: Adding theme license to databag
-[Follow this link to add the theme license information to the site databag.](adding_theme_license_info.md)
+[Follow this link to add the theme license information to the site secret.](adding_theme_license_info.md)
 
+## Where's My Stuff?
+The big difference that you as a user will notice is the new location of the site's information.
+
+To access a site's secret, the path is now `databags/drudhosting/{sitename}` (rather than `nmdhosting`)
+
+To access a site's archive, you will still use `drud file`. To access an archive in the new system, the archive folder name has `drud-` prepended to it. 
+
+To see some of these new site archives, run `drud file list drud-`
+
+```bash
+# Old syntax
+drud file get {sitename}/{environment}-{sitename}-{timestamp}
+
+# New Syntax
+drud file get drud-{sitename}/{environment}-{sitename}-{timestamp}
+
+# Example
+drud file get drud-d7/production-d7-1493783396.tar.gz
+```
+
+The new jobs are at `https://leroy.drud.com/job/production-{sitename}` and `https://leroy.drud.com/job/staging-{sitename}`.

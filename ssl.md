@@ -142,4 +142,4 @@ key: |-
 ```
 
 When you are done, close the secret, then upload all of these files to the drud file tool.
-`drud file put <filename>.zip <project>/<filename>.zip`
+`drud file put <filename>.zip drud-<project>/<filename>.zip`

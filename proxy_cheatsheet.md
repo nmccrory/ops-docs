@@ -20,12 +20,13 @@ Inside of each application block, any of the following optional flags can be spe
 | `client_max_body_size` | string | Controls the client max body size | `client_max_body_size: "25m"`
 | `maintenance` | Boolean | Redirects all requests to the [/var/www/maintenance.html](https://github.com/drud/drudfab/blob/master/roles/manage_proxy/files/maintenance.html) page on the proxy server and returns a 503 error code | `maintenance: true`
 
-_Note: logs can be accessed by running the [ops-tail-server-log](https://leroy.drud.com/job/ops-tail-server-log/build?delay=0sec) Jenkins job_
+_Note: Once enabled, logs can be accessed by running the [ops-tail-server-log](https://leroy.drud.com/job/ops-tail-server-log/build?delay=0sec) Jenkins job_
 
 **Deprecated flags**:
 www_force will now be ignored. Instead, the application name that is provided here (the url) will be enforced. e.g. `www.newmedia.com` would serve requests for both `newmedia.com` and `www.newmedia.com`, whereas `riotlabs.com` would only support traffic routed to `riotlabs.com` and would not respond to requests to `www.riotlabs.com`
 
-**Common Entries**
+--
+### Proxy Entry Examples
 
 ```yaml
 production:
@@ -74,6 +75,31 @@ To verify the proxy configuration is correct prior to pointing the client's doma
 Once this is saved, navigate to the domain in your browser. If the configuration is valid, you should see the site loading from our infrastructure, and non-www should redirect automatically to www.
 
 **Important:** Remove the /etc/hosts entry immediately after you have completed verification to ensure your system is relying on real DNS records to load the domain. Failure to remove the modification will make it impossible to verify the site is properly configured when client DNS records are repointed.
+
+## Enabling/Disabling Logging
+To be able to see the logs for a site:
+
+- Add `logging: true` to the proxy layer entry
+  - See the examples above in [Proxy Entry Examples](#proxy-entry-examples)
+- Then run an update on the site Jenkins job
+  - e.g. https://leroy.drud.com/production-{SITENAME} or https://leroy.drud.com/staging-{SITENAME}
+  - Once completed, the logs are now enabled for the site.
+- Logs can now be accessed by running the [ops-tail-server-log](https://leroy.drud.com/job/ops-tail-server-log/build?delay=0sec) Jenkins job
+  - On the web server
+      - Site error logs are at `/var/log/nginx/{SITE_NAME}.error.log`
+      - Site access logs are at `/var/log/{SITE_NAME}.access.log`
+      - The php-fpm error log is at `/etc/php/var/log/php-fpm.log`
+  - On the proxy servers
+      - Site error logs are at `/var/log/nginx/{URL}.error.log`
+      - Site access logs are available at `/var/log/nginx/{URL}.access.log`
+
+When done debugging:
+
+- Remove the `logging: true` directive from the proxy layer
+- Then run an update on the site Jenkins job
+  - e.g. https://leroy.drud.com/production-{SITENAME} or https://leroy.drud.com/staging-{SITENAME}
+
+
 
 ## Some Helpful Jenkins Jobs
 **These jobs only run the proxy portion of the drudfab deployment.** If you've made a change in databags/drudhosting/SITENAME, chances are you cannot use this job. If however you just edited the proxy layer and no changes need to be made on the web server itself, (i.e. changing the web server's vhost file to accept a new url, adding wp rewrite entries, etc)
