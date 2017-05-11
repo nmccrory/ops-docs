@@ -55,7 +55,12 @@ drud file get {sitename}/{environment}-{sitename}-{timestamp}
 drud file get drud-{sitename}/{environment}-{sitename}-{timestamp}
 
 # Example
-drud file get drud-d7/production-d7-1493783396.tar.gz
+drud file get drud-anewsite/production-anewsite-1493783396.tar.gz
 ```
 
 The new jobs are at `https://leroy.drud.com/job/production-{sitename}` and `https://leroy.drud.com/job/staging-{sitename}`.
+
+The new site URLs are at:
+
+- https://{sitename}.drud.io
+- https://{sitename}prod.drud.io
