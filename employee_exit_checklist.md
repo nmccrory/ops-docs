@@ -15,4 +15,4 @@
 * rotate github tokens for service accounts (newmediadenverbot, etc.)
 * Revoke access to any lastpass secrets that are shared. Most should be invalidated instead. This is done in lastpass "sharing center".
 * Make sure user is removed from [circle team](https://circleci.com/team). 
-
+* Make sure user is removed from Tweetdeck for the drud account (if they have access)
