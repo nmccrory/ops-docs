@@ -147,7 +147,16 @@ Clients hosting in DRUD infrastructure require the following DNS records:
 
 Name/Host/Alias | Time to Live (TTL) | Record Type | Value/Answer/Destination
 ------------ | ------------- | ----------- | ------------------------
-Blank or @ | 300 | A | 34.210.3.109 {br} 35.166.147.204
+Blank or @ | 300 | A | 34.210.3.109 <br> 35.166.147.204
 www | 300 | CNAME | hosting.drud.com
 
 Any client that hosts their site within our infrastructure must have the appropriate DNS records pointed at our proxy layer in AWS. In laymen's terms, they need to point their sites (i.e. clientsite.com and www.clientsite.com) at our infrastructure. That gives us the ability to manage which server(s) the domain points to without involving the client, which is highly beneficial for a variety of reasons (efficiency, removing the client as a dependency, etc).
+
+## Run a back-up on the old project in leroy.nmdev.us/job/production-sitename
+This will capture any differences during the back-up/create
+
+## Delete the DNS for the sitename.nmdev.us URLs
+Run leroy.nmdev.us/job/ops-delete-dns with `sitename` as the key.
+
+## Disable the old Jenkins job
+Go into the Jenkins job and disable it. Delete the build steps. Paste the link to the new Jenkins job.
