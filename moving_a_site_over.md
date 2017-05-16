@@ -8,12 +8,16 @@
 - [Copy the S3 archive over from `{sitename}/` to `drud-{sitename}/`](#copy-the-site-archive)
 - [Copy the `nmdhosting` secret over to `drudhosting` and modify a few values](#copy-the-site-metadata)
 - [Modify the proxy layer to move the production URL from `webcluster01` to `drud-elb`](#move-the-production-url-from-webcluster01-to-drud-elb)
-- [Run a create on https://leroy.drud.com/job/production-{site}](#deploy-it)
+- [Deploy it](#deploy-it)
   - The site is now live on the new infra, but nothing is pointing to it
 - [Confirm that the site is working in the new infra using /etc/hosts](#checking-to-make-sure-everything-worked)
-- [Run https://leroy.nmdev.us/job/ops-deploy-by-url for the production URL you just moved **NOTE THE NMDEV.US!!!**](#forward-the-traffic)
-  - This will set drud-elb as a downstream on the old proxy servers and the site's code/DB will now be living in the new infra
+- [Take the site live](#forward-the-traffic)
+  - This will set drud-elb as a downstream on the old proxy servers and the site's code/DB will now be hosted in the new infra
+- [Bring Staging Online](#bring-staging-online)
 - [End the content freeze](#end-the-content-freeze)
+- [Run a back-up on the old project](https://github.com/drud/ops-docs/blob/master/moving_a_site_over.md#run-a-back-up-on-the-old-project-in-leroynmdevusjobproduction-sitename)
+- [Delete the DNS](https://github.com/drud/ops-docs/blob/master/moving_a_site_over.md#delete-the-dns-for-the-sitenamenmdevus-urls)
+- [Disable the old Jenkins jobs](#disable-the-old-jenkins-jobs)
 - [Repoint the DNS](#point-the-dns-at-drud)
 
 ## Begin the content freeze
@@ -104,6 +108,8 @@ Open the proxy layer (at `databags/nmdproxy/upstream`) to move the production UR
 ## Deploy it!
 - Run a `create` on https://leroy.drud.com/job/production-{sitename}/
   - When this finishes, the site will be live, but nothing is pointed to it
+
+## Bring Staging Online
 - Run a [dev-sync](https://leroy.drud.com/job/dev-sync) (backup production, copy archives to staging/_default, create staging)
 
 ## Checking to make sure everything worked
@@ -141,6 +147,15 @@ If your verification steps check out, :thumbsup:, move on. If not, double-check 
 Run this job on the new infrastructure: [ops-deploy-by-url](https://leroy.drud.com/job/ops-deploy-by-url/) with `Environment = production` and `URL = the URL that you just set above (e.g. www.careincommon.com)`. Make sure the URL value does NOT contain http(s)://
 
 ## End the Content Freeze
+
+## Run a back-up on the old project in leroy.nmdev.us/job/production-sitename
+This will capture any differences during the back-up/create
+
+## Delete the DNS for the sitename.nmdev.us URLs
+Run leroy.nmdev.us/job/ops-delete-dns with `sitename` as the key.
+
+## Disable the old Jenkins job
+Go into the Jenkins job and disable it. Delete the build steps. Paste the link to the new Jenkins job.
 
 ## Point the DNS at DRUD
 Clients hosting in DRUD infrastructure require the following DNS records:
