@@ -65,14 +65,14 @@ The new site URLs are at:
 - https://{sitename}.drud.io
 - https://{sitename}prod.drud.io
 
-To use the local development drud binary, you will run all commands as normal except for the `drud legacy add` command. When you want to develop against a site that's on the new infrastructure, you will add the `--secretDir` flag.
+To use the local development drud binary, you will run all commands as normal except for the `drud dev add` command. When you want to develop against a site that's on the new infrastructure, you will add the `--secretDir` flag.
 
 ```
 # Syntax
-drud legacy add {sitename} {environment} --secretDir="drudhosting"
+drud dev add {sitename} {environment} --secretDir="drudhosting"
 
 # Example
-drud legacy add wpdemo production --secretDir="drudhosting"
+drud dev add wpdemo production --secretDir="drudhosting"
 ```
 
 _If you are developing a site against the old infrastructure, the flag is not necessary._
