@@ -1,11 +1,12 @@
 Hi {INSERT CLIENT},
 One important step in a web development project is to effectively manage where your domain (e.g. www.yoursite.com) points. Failure to plan for this can result in timing and propagation delays.
-To avoid any delays, SMB's hosting environments utilize a name based DNS, which allows us to point your domain at your current server up until the exact moment you’re ready to go live.
+To avoid any delays, our hosting environments utilize a name based DNS, which allows us to point your domain at your current server up until the exact moment you’re ready to go live.
  
 To get started, we ask you to update your DNS accordingly:
  
-example.com (non-www version) A record to 54.149.1.10
-www.example.com (www version) CNAME record to hosting.newmediadenver.com
+example.com (non-www version) A record to 34.210.3.109
+example.com (non-www version) A record to 35.166.147.204
+www.example.com (www version) CNAME record to hosting.drud.com
  
 Once updated, you will want to verify that this has been done correctly by using the following tools to check DNS records:
  
